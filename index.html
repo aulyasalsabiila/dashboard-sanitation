@@ -3,571 +3,233 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sanitasi Indekos · RT 01 RW 02 Tembalang</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-<style>
-:root {
-  --bg:     #f7f6f2;
-  --bg2:    #f0ede6;
-  --bg3:    #e8e4da;
-  --card:   #ffffff;
-  --card2:  #faf9f6;
-  --line:   rgba(30,28,24,.08);
-  --line2:  rgba(30,28,24,.14);
-  --sage:   #6e8c3a;
-  --sage2:  #8aac48;
-  --sage3:  rgba(110,140,58,.1);
-  --amber:  #b8872a;
-  --rose:   #b85a5a;
-  --sky:    #3a7fa8;
-  --text:   #1a1814;
-  --text2:  #4a4640;
-  --text3:  #8a8278;
-  --r:      14px;
-  --rx:     20px;
-}
-
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html { font-size:16px; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-/* subtle warm grain */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.028'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 9999;
-}
-
-/* sage glow top-left */
-body::after {
-  content: '';
-  position: fixed; top: -180px; left: -180px;
-  width: 600px; height: 600px;
-  background: radial-gradient(ellipse, rgba(110,140,58,.07) 0%, transparent 65%);
-  pointer-events: none; z-index: 0;
-}
-
-.shell {
-  position: relative; z-index: 1;
-  max-width: 1200px; margin: 0 auto;
-  padding: 0 2rem 4rem;
-}
-
-/* ── HEADER ── */
-.header {
-  padding: 3.5rem 0 3rem;
-  border-bottom: 1px solid var(--line);
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 2rem;
-  animation: fadeUp .7s ease both;
-}
-.header-badge {
-  display: inline-flex; align-items: center; gap: .5rem;
-  background: var(--sage3);
-  border: 1px solid rgba(110,140,58,.22);
-  border-radius: 999px;
-  padding: .28rem .85rem;
-  font-size: .68rem; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--sage); margin-bottom: 1.1rem;
-}
-.badge-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--sage2);
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-.header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(1.9rem, 3.5vw, 2.9rem);
-  font-weight: 400; line-height: 1.12;
-  letter-spacing: -.02em; color: var(--text);
-  margin-bottom: .5rem;
-}
-.header h1 em { font-style: italic; color: var(--sage); }
-.header-sub { font-size: .82rem; color: var(--text3); }
-.header-meta { text-align: right; flex-shrink: 0; }
-.header-date {
-  font-size: .72rem; color: var(--text3);
-  letter-spacing: .06em; text-transform: uppercase; margin-bottom: .3rem;
-}
-.header-time {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.5rem; color: var(--sage);
-  letter-spacing: -.02em;
-}
-
-/* ── STATS ── */
-.stats {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: .75rem; padding: 2rem 0;
-  animation: fadeUp .7s .08s ease both;
-}
-.stat-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--rx);
-  padding: 1.6rem 1.5rem;
-  position: relative; overflow: hidden;
-  box-shadow: 0 1px 4px rgba(30,28,24,.05), 0 4px 16px rgba(30,28,24,.04);
-  transition: box-shadow .25s, border-color .25s;
-}
-.stat-card::before {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent, var(--sage)), transparent);
-  opacity: .7;
-}
-.stat-card:hover {
-  box-shadow: 0 4px 20px rgba(30,28,24,.08);
-  border-color: var(--line2);
-}
-.stat-card.c-sage  { --accent: var(--sage); }
-.stat-card.c-sky   { --accent: var(--sky); }
-.stat-card.c-amber { --accent: var(--amber); }
-.stat-card.c-rose  { --accent: var(--rose); }
-
-.stat-label {
-  font-size: .65rem; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--text3); margin-bottom: .9rem;
-}
-.stat-val {
-  font-family: 'DM Serif Display', serif;
-  font-size: 2.8rem; font-weight: 400; line-height: 1;
-  letter-spacing: -.03em;
-}
-.stat-card.c-sage  .stat-val { color: var(--sage); }
-.stat-card.c-sky   .stat-val { color: var(--sky); }
-.stat-card.c-amber .stat-val { color: var(--amber); }
-.stat-card.c-rose  .stat-val { color: var(--rose); }
-.stat-sub { font-size: .72rem; color: var(--text3); margin-top: .4rem; }
-
-/* ── SECTION EYEBROW ── */
-.section-eyebrow {
-  font-size: .63rem; font-weight: 600;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: var(--text3); margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: .7rem;
-}
-.section-eyebrow::before {
-  content: ''; width: 20px; height: 1px;
-  background: var(--sage); flex-shrink: 0;
-}
-
-/* ── CHARTS ── */
-.charts-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: .75rem; margin-bottom: .75rem;
-  animation: fadeUp .7s .14s ease both;
-}
-.chart-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--rx);
-  padding: 1.8rem;
-  box-shadow: 0 1px 4px rgba(30,28,24,.05);
-  transition: box-shadow .25s, border-color .25s;
-}
-.chart-card:hover { box-shadow: 0 4px 20px rgba(30,28,24,.07); border-color: var(--line2); }
-.chart-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.05rem; font-weight: 400;
-  color: var(--text); margin-bottom: 1.4rem; letter-spacing: -.01em;
-}
-.chart-title em { font-style: italic; color: var(--sage); }
-.chart-box { position: relative; height: 220px; }
-
-/* ── TABLE ── */
-.table-section {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--rx);
-  padding: 1.8rem; margin-bottom: .75rem;
-  box-shadow: 0 1px 4px rgba(30,28,24,.05);
-  animation: fadeUp .7s .2s ease both;
-}
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
-thead tr { border-bottom: 1px solid var(--line2); }
-th {
-  font-size: .6rem; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--text3); padding: .5rem .75rem .8rem; text-align: left;
-}
-th.center { text-align: center; }
-tbody tr { border-bottom: 1px solid var(--line); transition: background .18s; }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--bg2); }
-td { padding: .85rem .75rem; color: var(--text2); }
-td.center { text-align: center; }
-td.name { color: var(--text); font-weight: 500; }
-
-.badge {
-  display: inline-flex; align-items: center;
-  padding: .2rem .7rem; border-radius: 999px;
-  font-size: .62rem; font-weight: 600;
-  letter-spacing: .06em; text-transform: uppercase;
-}
-.badge-good  { background: rgba(110,140,58,.1);  color: var(--sage);  border: 1px solid rgba(110,140,58,.22); }
-.badge-mid   { background: rgba(184,135,42,.1);  color: var(--amber); border: 1px solid rgba(184,135,42,.22); }
-.badge-bad   { background: rgba(184,90,90,.1);   color: var(--rose);  border: 1px solid rgba(184,90,90,.22); }
-.badge-type  { background: var(--bg2); color: var(--text2); border: 1px solid var(--line2); }
-
-.score-bar-wrap { display:flex; align-items:center; gap:.6rem; justify-content:center; }
-.score-bar {
-  width: 60px; height: 4px;
-  background: var(--bg3); border-radius: 2px; overflow: hidden;
-}
-.score-fill { height: 100%; border-radius: 2px; }
-.score-num { font-size: .78rem; font-weight: 600; color: var(--text); min-width: 2.2rem; }
-
-/* ── RECOMMENDATIONS ── */
-.reco-section {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--rx);
-  padding: 1.8rem; margin-bottom: .75rem;
-  box-shadow: 0 1px 4px rgba(30,28,24,.05);
-  animation: fadeUp .7s .26s ease both;
-}
-.reco-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .75rem; }
-.reco-card {
-  background: var(--card2);
-  border: 1px solid var(--line);
-  border-radius: var(--r);
-  padding: 1.4rem;
-  position: relative; overflow: hidden;
-}
-.reco-card::after {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-}
-.reco-high::after { background: var(--rose); }
-.reco-mid::after  { background: var(--amber); }
-.reco-prev::after { background: var(--sage); }
-.reco-tag {
-  font-size: .6rem; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase; margin-bottom: .8rem;
-}
-.reco-high .reco-tag { color: var(--rose); }
-.reco-mid  .reco-tag { color: var(--amber); }
-.reco-prev .reco-tag { color: var(--sage); }
-.reco-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1rem; color: var(--text);
-  margin-bottom: .85rem; letter-spacing: -.01em;
-}
-.reco-list { list-style: none; display: flex; flex-direction: column; gap: .45rem; }
-.reco-list li {
-  font-size: .78rem; color: var(--text3);
-  display: flex; align-items: flex-start; gap: .45rem; line-height: 1.5;
-}
-.reco-list li::before { content: '·'; font-size: 1.1rem; line-height: 1.2; flex-shrink: 0; }
-.reco-high .reco-list li::before { color: var(--rose); }
-.reco-mid  .reco-list li::before { color: var(--amber); }
-.reco-prev .reco-list li::before { color: var(--sage); }
-
-/* ── FOOTER ── */
-.footer {
-  padding: 1.8rem 0 0;
-  border-top: 1px solid var(--line);
-  display: flex; justify-content: space-between; align-items: center;
-  animation: fadeUp .7s .3s ease both;
-}
-.footer p { font-size: .72rem; color: var(--text3); }
-
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(18px); }
-  to   { opacity:1; transform:none; }
-}
-
-@media (max-width:900px) {
-  .stats { grid-template-columns: repeat(2,1fr); }
-  .charts-row { grid-template-columns: 1fr; }
-  .reco-grid  { grid-template-columns: 1fr; }
-}
-@media (max-width:560px) {
-  .shell { padding: 0 1rem 3rem; }
-  .header { flex-direction: column; align-items: flex-start; }
-  .stats { grid-template-columns: 1fr 1fr; }
-}
-</style>
+<title>NOIR — Luxury Fashion</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="shell">
 
-  <div class="header">
-    <div class="header-left">
-      <div class="header-badge">
-        <span class="badge-dot"></span>
-        Sistem Monitoring Digital
-      </div>
-      <h1>Dashboard Sanitasi<br><em>Indekos</em></h1>
-      <p class="header-sub">RT 01 RW 02 · Kelurahan Tembalang · Semarang</p>
-    </div>
-    <div class="header-meta">
-      <div class="header-date">Terakhir diperbarui</div>
-      <div class="header-time" id="currentDate">—</div>
-    </div>
-  </div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <div class="stats">
-    <div class="stat-card c-sage">
-      <div class="stat-label">Total Indekos</div>
-      <div class="stat-val">9</div>
-      <div class="stat-sub">Unit terdaftar</div>
-    </div>
-    <div class="stat-card c-sky">
-      <div class="stat-label">Total Penghuni</div>
-      <div class="stat-val">114</div>
-      <div class="stat-sub">Jiwa tercatat</div>
-    </div>
-    <div class="stat-card c-amber">
-      <div class="stat-label">Rata-rata Skor</div>
-      <div class="stat-val">75</div>
-      <div class="stat-sub">Dari 100 poin</div>
-    </div>
-    <div class="stat-card c-rose">
-      <div class="stat-label">Perlu Perbaikan</div>
-      <div class="stat-val">3</div>
-      <div class="stat-sub">Unit kategori buruk</div>
-    </div>
-  </div>
-
-  <div class="charts-row">
-    <div class="chart-card">
-      <div class="section-eyebrow">Distribusi</div>
-      <div class="chart-title">Kategori Sanitasi <em>Indekos</em></div>
-      <div class="chart-box"><canvas id="categoryChart"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="section-eyebrow">Analisis</div>
-      <div class="chart-title">Skor Rata-rata per <em>Aspek</em></div>
-      <div class="chart-box"><canvas id="aspectChart"></canvas></div>
-    </div>
-  </div>
-
-  <div class="charts-row" style="animation-delay:.17s">
-    <div class="chart-card">
-      <div class="section-eyebrow">Komposisi</div>
-      <div class="chart-title">Distribusi <em>Jenis</em> Indekos</div>
-      <div class="chart-box"><canvas id="typeDistChart"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="section-eyebrow">Perbandingan</div>
-      <div class="chart-title">Rata-rata Skor per <em>Jenis</em></div>
-      <div class="chart-box"><canvas id="typeScoreChart"></canvas></div>
-    </div>
-  </div>
-
-  <div class="table-section">
-    <div class="section-eyebrow">Detail Kondisi</div>
-    <div class="chart-title" style="margin-bottom:1.4rem">Data Sanitasi per <em>Indekos</em></div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Nama Indekos</th>
-            <th class="center">Jenis</th>
-            <th class="center">Penghuni</th>
-            <th class="center">Skor</th>
-            <th class="center">Kategori</th>
-            <th class="center">Status</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="reco-section">
-    <div class="section-eyebrow">Tindak Lanjut</div>
-    <div class="chart-title" style="margin-bottom:1.4rem">Rekomendasi <em>Perbaikan</em></div>
-    <div class="reco-grid">
-      <div class="reco-card reco-high">
-        <div class="reco-tag">Prioritas Tinggi</div>
-        <div class="reco-title">Intervensi Segera</div>
-        <ul class="reco-list">
-          <li>Perbaikan sistem air bersih di beberapa kos</li>
-          <li>Peningkatan pengelolaan sampah organik</li>
-          <li>Perbaikan saluran limbah yang tersumbat</li>
-        </ul>
-      </div>
-      <div class="reco-card reco-mid">
-        <div class="reco-tag">Prioritas Sedang</div>
-        <div class="reco-title">Peningkatan Bertahap</div>
-        <ul class="reco-list">
-          <li>Peningkatan ventilasi toilet</li>
-          <li>Program edukasi penghuni</li>
-          <li>Pemasangan tempat sampah terpisah</li>
-        </ul>
-      </div>
-      <div class="reco-card reco-prev">
-        <div class="reco-tag">Pencegahan</div>
-        <div class="reco-title">Pemeliharaan Rutin</div>
-        <ul class="reco-list">
-          <li>Monitoring rutin bulanan</li>
-          <li>Pelatihan pengelola kos</li>
-          <li>Sistem pelaporan digital</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    <p>© 2025 Dashboard Monitoring Sanitasi Indekos · RT 01 RW 02 Kelurahan Tembalang</p>
-    <p id="footerDate"></p>
-  </div>
-
+<!-- SEARCH BAR -->
+<div class="search-bar" id="searchBar">
+  <input type="text" class="search-input" id="searchInput" placeholder="Cari produk...">
+  <div class="search-results" id="searchResults"></div>
+  <button class="search-close" onclick="closeSearch()">✕</button>
 </div>
 
-<script>
-const kosData = [
-  { nama:"Kos Melati",    jenis:"Putri",  penghuni:14, skor:82, aspek:[85,80,78,88,82] },
-  { nama:"Kos Kenanga",   jenis:"Putra",  penghuni:12, skor:68, aspek:[70,65,72,68,65] },
-  { nama:"Kos Mawar",     jenis:"Campur", penghuni:18, skor:91, aspek:[92,90,88,94,91] },
-  { nama:"Kos Dahlia",    jenis:"Putri",  penghuni:10, skor:55, aspek:[58,52,50,60,55] },
-  { nama:"Kos Anggrek",   jenis:"Putra",  penghuni:15, skor:74, aspek:[75,72,70,78,75] },
-  { nama:"Kos Flamboyan", jenis:"Campur", penghuni:16, skor:88, aspek:[90,86,85,92,87] },
-  { nama:"Kos Teratai",   jenis:"Putri",  penghuni:11, skor:45, aspek:[48,42,44,50,41] },
-  { nama:"Kos Lotus",     jenis:"Putra",  penghuni:9,  skor:78, aspek:[80,75,76,82,77] },
-  { nama:"Kos Sakura",    jenis:"Campur", penghuni:9,  skor:63, aspek:[65,60,62,68,60] },
-];
+<div class="announce">✦ Pengiriman gratis untuk pembelian di atas Rp 500.000 ✦ Koleksi Musim Ini Telah Hadir</div>
 
-const getKat   = s => s>=80 ? {label:'Baik',  cls:'badge-good'} : s>=60 ? {label:'Sedang',cls:'badge-mid'} : {label:'Buruk',cls:'badge-bad'};
-const getStat  = s => s>=80 ? {label:'Memenuhi Syarat',cls:'badge-good'} : s>=60 ? {label:'Perlu Perhatian',cls:'badge-mid'} : {label:'Tidak Memenuhi',cls:'badge-bad'};
-const getCol   = s => s>=80 ? '#6e8c3a' : s>=60 ? '#b8872a' : '#b85a5a';
+<header>
+  <nav class="nav-left">
+    <a href="#">Koleksi</a>
+    <a href="#cat-wanita">Wanita</a>
+    <a href="#cat-aksesori">Aksesori</a>
+  </nav>
+  <a href="#" class="logo">Noir</a>
+  <div class="header-icons">
+    <nav class="nav-right">
+      <a href="#">Tentang</a>
+      <a href="#">Lookbook</a>
+    </nav>
+    <button class="icon-btn" onclick="openSearch()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+    <button class="icon-btn" onclick="toggleCart()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
 
-const tbody = document.getElementById('tableBody');
-kosData.forEach(k => {
-  const kat=getKat(k.skor), st=getStat(k.skor), col=getCol(k.skor);
-  tbody.innerHTML += `<tr>
-    <td class="name">${k.nama}</td>
-    <td class="center"><span class="badge badge-type">${k.jenis}</span></td>
-    <td class="center">${k.penghuni}</td>
-    <td class="center">
-      <div class="score-bar-wrap">
-        <div class="score-bar"><div class="score-fill" style="width:${k.skor}%;background:${col}"></div></div>
-        <span class="score-num">${k.skor}</span>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow fade-up">Koleksi Terbaru 2025</div>
+    <h1 class="fade-up">Keanggunan<br>yang Tak<br><em>Lekang Waktu</em></h1>
+    <p class="hero-desc fade-up">Setiap helai kain menceritakan sebuah kisah. Koleksi eksklusif kami dirancang untuk wanita yang menghargai keindahan dalam kesederhanaan.</p>
+    <div class="hero-actions fade-up">
+      <a href="#products" class="btn-gold">Belanja Sekarang</a>
+      <a href="#" class="btn-outline">Lihat Lookbook</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&q=80" alt="Hero" class="hero-img-main">
+    <div class="hero-img-overlay"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span>Koleksi Eksklusif</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Premium Quality</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Sustainable Fashion</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Free Shipping</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Khusus Wanita</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Aksesori Premium</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Koleksi Eksklusif</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Premium Quality</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Sustainable Fashion</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Free Shipping</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Khusus Wanita</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Aksesori Premium</span>
+  </div>
+</div>
+
+<!-- KATEGORI -->
+<div class="section-header">
+  <div class="section-eyebrow">Jelajahi</div>
+  <h2 class="section-title">Temukan <em>Gaya</em> Anda</h2>
+</div>
+<div class="categories">
+  <div class="cat-card" id="cat-wanita">
+    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=900&q=80" alt="Wanita" class="cat-img">
+    <div class="cat-overlay">
+      <div class="cat-label">Kategori Utama</div>
+      <div class="cat-name">Wanita</div>
+      <div class="cat-sub">Dress, Blazer, Outer &amp; lebih banyak</div>
+      <a href="#products" class="cat-link">Lihat Koleksi</a>
+    </div>
+  </div>
+  <div class="cat-card" id="cat-aksesori">
+    <img src="aksesoris.jpg" alt="Aksesori" class="cat-img">
+    <div class="cat-overlay">
+      <div class="cat-label">Kategori</div>
+      <div class="cat-name">Aksesori</div>
+      <div class="cat-sub">Tas, Perhiasan &amp; Pelengkap</div>
+      <a href="#products" class="cat-link">Lihat Koleksi</a>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUK -->
+<div class="section-header" id="products">
+  <div class="section-eyebrow">Pilihan Terbaik</div>
+  <h2 class="section-title">Koleksi <em>Unggulan</em></h2>
+</div>
+<div class="products-section">
+  <div class="products-toolbar">
+    <div class="products-filter">
+      <button class="filter-btn active" onclick="filterProducts(this,'semua')">Semua</button>
+      <button class="filter-btn" onclick="filterProducts(this,'wanita')">Wanita</button>
+      <button class="filter-btn" onclick="filterProducts(this,'aksesori')">Aksesori</button>
+      <button class="filter-btn" onclick="filterProducts(this,'sale')">Sale</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+      <div class="sort-wrap">
+        <span class="sort-label">Urutkan</span>
+        <select class="sort-select" id="sortSelect" onchange="applySortFilter()">
+          <option value="default">Terbaru</option>
+          <option value="price-asc">Harga: Terendah</option>
+          <option value="price-desc">Harga: Tertinggi</option>
+          <option value="rating">Rating Terbaik</option>
+          <option value="name">Nama A–Z</option>
+        </select>
       </div>
-    </td>
-    <td class="center"><span class="badge ${kat.cls}">${kat.label}</span></td>
-    <td class="center"><span class="badge ${st.cls}">${st.label}</span></td>
-  </tr>`;
-});
+      <span class="products-count" id="productsCount">6 produk</span>
+    </div>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</div>
 
-const now = new Date();
-const ds  = now.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
-document.getElementById('currentDate').textContent = ds;
-document.getElementById('footerDate').textContent  = 'Data diperbarui: ' + ds;
+<!-- EDITORIAL -->
+<div class="editorial">
+  <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&q=80" alt="Editorial" class="editorial-img">
+  <div class="editorial-content">
+    <div class="editorial-tag">Editorial</div>
+    <h2>The Art of<br><em>Dressing Well</em></h2>
+    <p>Temukan inspirasi gaya hidup dan fashion terkini dari tim kurator kami. Setiap pilihan kami dasarkan pada keindahan, kualitas, dan keabadian.</p>
+    <a href="#" class="btn-gold">Baca Selengkapnya</a>
+  </div>
+</div>
 
-/* Chart defaults — light theme */
-Chart.defaults.color       = '#8a8278';
-Chart.defaults.borderColor = 'rgba(30,28,24,.07)';
-Chart.defaults.font.family = "'DM Sans', sans-serif";
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <h2>Jadilah yang <em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold)">Pertama</em> Tahu</h2>
+  <p>Daftarkan email Anda dan dapatkan akses eksklusif ke koleksi terbaru serta penawaran spesial</p>
+  <div class="newsletter-form">
+    <input type="email" class="newsletter-input" placeholder="Alamat email Anda">
+    <button class="newsletter-btn" onclick="handleNewsletter(this)">Daftar</button>
+  </div>
+</div>
 
-const C = { sage:'#6e8c3a', amber:'#b8872a', rose:'#b85a5a', sky:'#3a7fa8', lilac:'#7a6aaa' };
-const tooltip = {
-  backgroundColor:'#ffffff', borderColor:'rgba(30,28,24,.12)', borderWidth:1,
-  titleColor:'#1a1814', bodyColor:'#6a6660', padding:12,
-  boxShadow: '0 4px 12px rgba(30,28,24,.1)',
-};
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="logo">Noir</a>
+    <p>Kami percaya bahwa fashion adalah bentuk seni yang dapat dikenakan. Setiap koleksi adalah ekspresi dari keanggunan yang tak lekang oleh waktu.</p>
+    <div class="social-links">
+      <a href="#" class="social-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="#" class="social-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" class="social-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="#" class="social-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer-col"><h4>Belanja</h4><ul><li><a href="#cat-wanita">Wanita</a></li><li><a href="#cat-aksesori">Aksesori</a></li><li><a href="#">Koleksi Baru</a></li><li><a href="#">Sale</a></li></ul></div>
+  <div class="footer-col"><h4>Informasi</h4><ul><li><a href="#">Tentang Kami</a></li><li><a href="#">Keberlanjutan</a></li><li><a href="#">Karir</a></li><li><a href="#">Lookbook</a></li></ul></div>
+  <div class="footer-col"><h4>Bantuan</h4><ul><li><a href="#">Pengiriman</a></li><li><a href="#">Pengembalian</a></li><li><a href="#">Panduan Ukuran</a></li><li><a href="#">FAQ</a></li><li><a href="#">Kontak</a></li></ul></div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 Noir. Semua hak dilindungi.</p>
+  <p>Dibuat dengan keanggunan &amp; ketelitian</p>
+</div>
 
-/* Doughnut - category */
-new Chart(document.getElementById('categoryChart'),{
-  type:'doughnut',
-  data:{
-    labels:['Baik (≥80)','Sedang (60-79)','Buruk (<60)'],
-    datasets:[{
-      data:[kosData.filter(k=>k.skor>=80).length, kosData.filter(k=>k.skor>=60&&k.skor<80).length, kosData.filter(k=>k.skor<60).length],
-      backgroundColor:[C.sage,C.amber,C.rose],
-      borderColor:'#f7f6f2', borderWidth:3, hoverOffset:6,
-    }]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false, cutout:'68%',
-    plugins:{
-      legend:{ position:'right', labels:{ color:'#6a6660', font:{size:11}, padding:16, usePointStyle:true, pointStyleWidth:8 }},
-      tooltip:{...tooltip}
-    }
-  }
-});
+<!-- CART -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <span class="cart-title">Keranjang Belanja</span>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Keranjang Anda kosong</p>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <span class="cart-subtotal-label">Subtotal</span>
+      <span class="cart-subtotal-val" id="cartSubtotal">Rp 0</span>
+    </div>
+    <div class="cart-subtotal" style="margin-bottom:.4rem">
+      <span class="cart-subtotal-label">Pengiriman</span>
+      <span class="cart-subtotal-val" id="cartShipping">—</span>
+    </div>
+    <div class="cart-total">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price" id="cartTotal">Rp 0</span>
+    </div>
+    <button class="checkout-btn" onclick="handleCheckout()">Lanjut ke Pembayaran →</button>
+    <a href="#" class="btn-outline cart-continue" onclick="toggleCart();return false">← Lanjut Belanja</a>
+  </div>
+</div>
 
-/* Bar - aspect */
-const aspekLabels = ['Air Bersih','Toilet','Sampah','Drainase','Ventilasi'];
-const aspekAvg    = aspekLabels.map((_,i) => Math.round(kosData.reduce((s,k)=>s+k.aspek[i],0)/kosData.length));
-new Chart(document.getElementById('aspectChart'),{
-  type:'bar',
-  data:{
-    labels:aspekLabels,
-    datasets:[{
-      data:aspekAvg,
-      backgroundColor:[C.sage+'cc',C.sky+'cc',C.amber+'cc',C.lilac+'cc',C.rose+'cc'],
-      borderColor:'transparent', borderRadius:6, borderSkipped:false,
-    }]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{ legend:{display:false}, tooltip:{...tooltip} },
-    scales:{
-      x:{ grid:{display:false}, ticks:{color:'#8a8278',font:{size:11}} },
-      y:{ min:0, max:100, grid:{color:'rgba(30,28,24,.06)'}, ticks:{color:'#8a8278',font:{size:11},stepSize:20} }
-    }
-  }
-});
+<!-- QUICK VIEW MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleModalOverlayClick(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img-side">
+      <img id="modalImg" src="" alt="">
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
 
-/* Doughnut - jenis */
-const jenisLabel = ['Putri','Putra','Campur'];
-new Chart(document.getElementById('typeDistChart'),{
-  type:'doughnut',
-  data:{
-    labels:['Kos Putri','Kos Putra','Kos Campur'],
-    datasets:[{
-      data:jenisLabel.map(j=>kosData.filter(k=>k.jenis===j).length),
-      backgroundColor:[C.rose,C.sky,C.amber],
-      borderColor:'#f7f6f2', borderWidth:3, hoverOffset:6,
-    }]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false, cutout:'68%',
-    plugins:{
-      legend:{ position:'right', labels:{color:'#6a6660',font:{size:11},padding:16,usePointStyle:true,pointStyleWidth:8} },
-      tooltip:{...tooltip}
-    }
-  }
-});
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
 
-/* Horizontal bar - jenis score */
-new Chart(document.getElementById('typeScoreChart'),{
-  type:'bar',
-  data:{
-    labels:jenisLabel.map(j=>'Kos '+j),
-    datasets:[{
-      data:jenisLabel.map(j=>{ const a=kosData.filter(k=>k.jenis===j); return Math.round(a.reduce((s,k)=>s+k.skor,0)/a.length); }),
-      backgroundColor:[C.rose+'bb',C.sky+'bb',C.amber+'bb'],
-      borderColor:'transparent', borderRadius:6, borderSkipped:false,
-    }]
-  },
-  options:{
-    indexAxis:'y',
-    responsive:true, maintainAspectRatio:false,
-    plugins:{ legend:{display:false}, tooltip:{...tooltip} },
-    scales:{
-      x:{ min:0, max:100, grid:{color:'rgba(30,28,24,.06)'}, ticks:{color:'#8a8278',font:{size:11},stepSize:20} },
-      y:{ grid:{display:false}, ticks:{color:'#6a6660',font:{size:12}} }
-    }
-  }
-});
-</script>
+<div class="toast" id="toast"><div class="toast-dot"></div><span id="toastMsg"></span></div>
+
+<script src="script.js"></script>
 </body>
 </html>
