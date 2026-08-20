@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanitasi Indekos · RT 01 RW 02 Tembalang</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        Sistem Monitoring Digital
+      </div>
+      <h1>Dashboard Sanitasi<br><em>Indekos</em></h1>
+      <p class="header-sub">RT 01 RW 02 · Kelurahan Tembalang · Semarang</p>
+    </div>
+    <div class="header-meta">
+      <div class="header-date">Terakhir diperbarui</div>
+      <div class="header-time" id="currentDate">—</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card c-sage">
+      <div class="stat-label">Total Indekos</div>
+      <div class="stat-val">9</div>
+      <div class="stat-sub">Unit terdaftar</div>
+    </div>
+    <div class="stat-card c-sky">
+      <div class="stat-label">Total Penghuni</div>
+      <div class="stat-val">114</div>
+      <div class="stat-sub">Jiwa tercatat</div>
+    </div>
+    <div class="stat-card c-amber">
+      <div class="stat-label">Rata-rata Skor</div>
+      <div class="stat-val">75</div>
+      <div class="stat-sub">Dari 100 poin</div>
+    </div>
+    <div class="stat-card c-rose">
+      <div class="stat-label">Perlu Perbaikan</div>
+      <div class="stat-val">3</div>
+      <div class="stat-sub">Unit kategori buruk</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 1 -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="section-eyebrow">Distribusi</div>
+      <div class="chart-title">Kategori Sanitasi <em>Indekos</em></div>
+      <div class="chart-box"><canvas id="categoryChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-eyebrow">Analisis</div>
+      <div class="chart-title">Skor Rata-rata per <em>Aspek</em></div>
+      <div class="chart-box"><canvas id="aspectChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2 -->
+  <div class="charts-row" style="animation-delay:.17s">
+    <div class="chart-card">
+      <div class="section-eyebrow">Komposisi</div>
+      <div class="chart-title">Distribusi <em>Jenis</em> Indekos</div>
+      <div class="chart-box"><canvas id="typeDistChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-eyebrow">Perbandingan</div>
+      <div class="chart-title">Rata-rata Skor per <em>Jenis</em></div>
+      <div class="chart-box"><canvas id="typeScoreChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-section">
+    <div class="section-eyebrow">Detail Kondisi</div>
+    <div class="chart-title" style="margin-bottom:1.4rem">Data Sanitasi per <em>Indekos</em></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Indekos</th>
+            <th class="center">Jenis</th>
+            <th class="center">Penghuni</th>
+            <th class="center">Skor</th>
+            <th class="center">Kategori</th>
+            <th class="center">Status</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="reco-section">
+    <div class="section-eyebrow">Tindak Lanjut</div>
+    <div class="chart-title" style="margin-bottom:1.4rem">Rekomendasi <em>Perbaikan</em></div>
+    <div class="reco-grid">
+      <div class="reco-card reco-high">
+        <div class="reco-tag">Prioritas Tinggi</div>
+        <div class="reco-title">Intervensi Segera</div>
+        <ul class="reco-list">
+          <li>Perbaikan sistem air bersih di beberapa kos</li>
+          <li>Peningkatan pengelolaan sampah organik</li>
+          <li>Perbaikan saluran limbah yang tersumbat</li>
+        </ul>
+      </div>
+      <div class="reco-card reco-mid">
+        <div class="reco-tag">Prioritas Sedang</div>
+        <div class="reco-title">Peningkatan Bertahap</div>
+        <ul class="reco-list">
+          <li>Peningkatan ventilasi toilet</li>
+          <li>Program edukasi penghuni</li>
+          <li>Pemasangan tempat sampah terpisah</li>
+        </ul>
+      </div>
+      <div class="reco-card reco-prev">
+        <div class="reco-tag">Pencegahan</div>
+        <div class="reco-title">Pemeliharaan Rutin</div>
+        <ul class="reco-list">
+          <li>Monitoring rutin bulanan</li>
+          <li>Pelatihan pengelola kos</li>
+          <li>Sistem pelaporan digital</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>© 2025 Dashboard Monitoring Sanitasi Indekos · RT 01 RW 02 Kelurahan Tembalang</p>
+    <p id="footerDate"></p>
+  </div>
+
+</div><!-- /shell -->
+
+<script src="script.js"></script>
+</body>
+</html>
